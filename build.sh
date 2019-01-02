@@ -22,18 +22,6 @@ cd src
 nasm -O0 -w+orphan-labels -f bin -o kernel.bin kernel.asm || exit
 cd ..
 
-echo ">>> Assembling essential files for the operating system..."
-
-cd src/system
-
-for i in *.asm
-do
-	nasm -O0 -w+orphan-labels -f bin $i -o `basename $i .asm`.bin || exit
-done
-
-cd ..
-cd ..
-
 echo ">>> Assembling programs..."
 
 cd src/programs
@@ -59,7 +47,6 @@ rm -rf tmp-loop
 mkdir tmp-loop && mount -o loop -t vfat flp/rawOS.flp tmp-loop && cp src/kernel.bin tmp-loop/
 
 cp src/programs/* tmp-loop
-cp src/system/* tmp-loop
 
 sleep 0.2
 
