@@ -13,6 +13,12 @@ os_init:
 	sti				; Restore interrupts
 	cld				; The default direction for string operations
 					; will be 'up' - incrementing address in RAM
+    mov ax, 2000h			; Set all segments to match where kernel is loaded
+	mov ds, ax			; After this, we don't need to bother with
+	mov es, ax			; segments ever again, as rawOS and its programs
+	mov fs, ax			; live entirely in 64K
+	mov gs, ax
+	
     string_to_print db 'Hello this is my new kernel', 0x0D, 0x0A, 0x00
 	mov si, string_to_print
 	call print_string
