@@ -5,12 +5,10 @@ if test "`whoami`" != "root" ; then
 	exit
 fi
 
+rm flp/rawOS.flp
 
-if [ ! -e flp/rawOS.flp ]
-then
-	echo ">>> Creating new floppy image..."
-	mkdosfs -C flp/rawOS.flp 1440 || exit
-fi
+echo ">>> Creating new floppy image..."
+mkdosfs -C flp/rawOS.flp 1440 || exit
 
 
 echo ">>> Assembling bootloader..."
@@ -67,7 +65,7 @@ sleep 0.2
 
 echo ">>> Unmounting loopback floppy..."
 
-umount tmp-loop
+umount tmp-loop || exit
 
 rm -rf tmp-loop
 
