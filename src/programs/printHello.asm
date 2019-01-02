@@ -7,26 +7,21 @@ start:
 
 	mov ax, 07C0h		; Set data segment to where we're loaded
 	mov ds, ax
+    ; -------------------------------------------
 
-    mov bx, 0h
+    mov bx, 0h ; Set bx as a counter for our loop
 
     call repeat
 
     jmp $
 
-    text_string db 'Hello world', 0
-
+    text_string db 'Hello world', 0x0D, 0x0A, 0x00 
+main_loop:
+    
 repeat:
-    mov dl, 10
-    mov ah, 02h
-    int 21h
-    mov dl, 13
-    mov ah, 02h
-    int 21h
+    mov si, text_string ; Move text string into the tranfer registry
 
-    mov si, text_string
-
-    mov ah, 0Eh
+    mov ah, 0Eh ; Set ah for interupt: TELETYPE OUTPUT
 
 print_re:
     lodsb
