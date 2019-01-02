@@ -6,9 +6,6 @@ BITS 16
 disk_buffer	equ	24576
 
 os_init:
-    call os_main
-    jmp $
-os_main:
     cli				; Clear interrupts
 	mov ax, 0
 	mov ss, ax		; Set stack segment and pointer
@@ -20,7 +17,7 @@ os_main:
 	mov si, string_to_print
 	call print_string
 
-	ret
+	jmp $
 
 ; INCLUDES -----------------------------------------------------------
 
