@@ -1,7 +1,7 @@
 BITS 16
 
-%DEFINE MIKEOS_VER '0.1'	; OS version number
-%DEFINE MIKEOS_API_VER '0.1'; API version
+%DEFINE OS_VER '0.1'	; OS version number
+%DEFINE OS_API_VER '0.1'; API version
 
 disk_buffer	equ	24576
 
@@ -22,6 +22,9 @@ os_init:
     string_to_print db 'Hello this is my new kernel', 0x0D, 0x0A, 0x00
 	mov si, string_to_print
 	call print_string
+
+	mov ah, 42h
+	int 15h
 
 	jmp $
 
