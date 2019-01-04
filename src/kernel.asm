@@ -28,6 +28,8 @@ ros_init:
 	mov gs, ax
 
 	pusha ; Save registries
+	cmp key_needed, 0 ; Check if keypress is needed
+	je ros_start ; If not: start the os
 
 ros_init_get_keystroke:
 	mov si, string_key_wait
@@ -39,12 +41,17 @@ ros_init_get_keystroke:
 	cmp al, 72h ; If it wasn't enter, check if it was 'r'
 	je ros_system_reboot ; Reboot the system if the user typed 'r'
 	jmp ros_init_get_keystroke ; Else: repeat
+
+; Initialize the api, then find the 
 ros_start:
-    popa
-	mov si, string_key_got_enter
+    mov si, string_key_got_enter
 	call ros_io_printstring
+    popa
 	jmp $
+; GLOBAL VARIABLES ---------------------------------------------------
+
+key_needed dw 1
 
 ; INCLUDES -----------------------------------------------------------
 
-%INCLUDE "system/basic.asm"
+%INCLUDE "rawOS/api.asm"
