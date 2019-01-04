@@ -5,7 +5,15 @@ BITS 16
 
 disk_buffer	equ	24576
 
-os_init:
+ros_api_callpoints:
+    jmp ros_init ; 0000h
+
+
+; Kernel starts here
+; Variables:
+string_key_wait db 'Press enter to load kernel or r to reboot', 0h
+string_key_got_enter db 'Starting system...', 0Dh, 0Ah, 0h
+ros_init:
     cli				; Clear interrupts
 	mov ax, 0
 	mov ss, ax		; Set stack segment and pointer
@@ -18,14 +26,23 @@ os_init:
 	mov es, ax			; segments ever again, as rawOS and its programs
 	mov fs, ax			; live entirely in 64K
 	mov gs, ax
-	
-    string_to_print db 'Hello this is my new kernel', 0x0D, 0x0A, 0x00
-	mov si, string_to_print
-	call print_string
 
-	mov ah, 42h
-	int 15h
+	pusha ; Save registries
 
+ros_init_get_keystroke:
+	mov si, string_key_wait
+	call ros_io_printstring
+	mov ax, 0 ; Get keystroke
+	int 16h
+	cmp al, Dh ; Check if key pressed was enter
+	je ros_start ; If it was; start the os
+	cmp al, 72h ; If it wasn't enter, check if it was 'r'
+	je ros_system_reboot ; Reboot the system if the user typed 'r'
+	jmp ros_init_get_keystroke ; Else: repeat
+ros_start:
+    popa
+	mov si, string_key_got_enter
+	call ros_io_printstring
 	jmp $
 
 ; INCLUDES -----------------------------------------------------------
