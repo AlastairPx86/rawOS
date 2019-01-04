@@ -18,9 +18,6 @@ ros_io_printstring_done:
     ret
 
 ; Reboots the system
-system_reboot_message db 'Rebooting...' 0Dh, 0Ah, 0h
 ros_system_reboot:
-    mov si, system_reboot_message
-    call ros_io_printstring
 	mov ax, 0
 	int 19h
