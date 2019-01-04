@@ -11,7 +11,7 @@ ros_api_callpoints:
 
 ; Kernel starts here
 ; Variables:
-string_key_wait db 'Press enter to load kernel or r to reboot', 0h
+string_key_wait db 'Press enter to load kernel or r to reboot', 0Dh, 0Ah, 0h
 string_key_got_enter db 'Starting system...', 0Dh, 0Ah, 0h
 ros_init:
     cli				; Clear interrupts
@@ -34,7 +34,7 @@ ros_init_get_keystroke:
 	call ros_io_printstring
 	mov ax, 0 ; Get keystroke
 	int 16h
-	cmp al, Dh ; Check if key pressed was enter
+	cmp al, 0Dh ; Check if key pressed was enter
 	je ros_start ; If it was; start the os
 	cmp al, 72h ; If it wasn't enter, check if it was 'r'
 	je ros_system_reboot ; Reboot the system if the user typed 'r'
