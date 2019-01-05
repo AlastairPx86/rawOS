@@ -20,51 +20,43 @@ ros_math_multiply_done:
 
 ; Divides two integers
 ; INPUT: ax = value to divide, bx = value to divide with, si = max length of remainder
-; OUTPUT: si = quota, dx = remainder
+; OUTPUT: di = quota, dx = remainder
+; VARIABLES:
+interger dw 0h
+divisor dw 0h
+quota dw 0h
+remainder dw 0h
+cxBackup dw 0h
 ros_math_divide:
-    push cx
-    push di
-    push ax
+    push ax ; Push the registries which we do not want to modify
     push bx
+    push cx
+    push si
+
+    mov interger, ax ; Set variables
+    mov divisor, bx
     mov cx, 0h
-    add si, 1h
+    add si, 1h ; Needed for the counter to be in sync
 ros_math_divide_repeat:
-    cmp ax, bx
+    cmp ax, bx ; Currently cx is the subtraction counter while the positon counter is in cxBackup
     jl ros_math_divide_add
     sub ax, bx
-    add cl, 1h
+    add cx, 1h
     jmp ros_math_divide_repeat
 ros_math_divide_add:
-    cmp ch, 0h
-    je ros_math_divide_add_si
-    jmp ros_math_divide_add_re
-ros_math_divide_add_si:
-    mov di, cl
+    push cx ; cx and cxBackup swith places
+    mov cx, cxBackup
+    pop cxBackup
+
+    cmp cx, 0h ; Check if this is the first iteration
+    je ros_math_divide_add_q ; If so: add value to quota
+ros_math_divide_add_q:
+    push cx ; cx and cxBackup swith places
+    mov cx, cxBackup
+    pop cxBackup
+
+    mov quota, cx ; Set quota
     jmp ros_math_divide_check
 ros_math_divide_add_re:
-    push ax
-    push si
-    mov ax, dx
-    mov si, Ah
-    call ros_math_multiply
-    mov dx, si
-    pop si
-    pop ax
-    add dx, cl
+    
 ros_math_divide_check:
-    add ch, 1h
-    push si
-    mov si, Ah
-    call ros_math_multiply
-    mov ax, si
-    pop si
-    cmp ch, si
-    je ros_math_divide_done
-    jmp ros_math_divide_repeat
-ros_math_divide_done:
-    mov si, di
-    pop bx
-    pop ax
-    pop di
-    pop cx
-    ret
