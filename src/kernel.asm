@@ -7,6 +7,8 @@ disk_buffer	equ	24576
 
 ros_api_callpoints:
     jmp ros_init ; 0000h
+	jmp ros_io_printstring ; 0003h
+	jmp ros_system_reboot ; 0006h
 
 
 ; Kernel starts here
@@ -28,7 +30,7 @@ ros_init:
 	mov gs, ax
 
 	pusha ; Save registries
-	cmp key_needed, 0 ; Check if keypress is needed
+	cmp byte [key_needed], 0h ; Check if keypress is needed
 	je ros_start ; If not: start the os
 
 ros_init_get_keystroke:
@@ -43,15 +45,31 @@ ros_init_get_keystroke:
 	jmp ros_init_get_keystroke ; Else: repeat
 
 ; Initialize the api, then find the 
+string_v db 'Works', 0h
 ros_start:
     mov si, string_key_got_enter
 	call ros_io_printstring
     popa
+	call ros_api_init
+
+	pusha
+	mov ax, 5h
+	mov bx, 2h
+	mov dx, 0h
+
+	div bx
+	mov si, ax
+	call ros_io_printchar
+	mov si, dx
+	call ros_io_printchar
+	popa
 	jmp $
 ; GLOBAL VARIABLES ---------------------------------------------------
 
-key_needed dw 1
+key_needed dw 1h
 
 ; INCLUDES -----------------------------------------------------------
 
 %INCLUDE "rawOS/api.asm"
+
+; IMPORTANT POINTS IN MEMORY

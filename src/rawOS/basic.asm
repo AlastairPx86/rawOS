@@ -17,7 +17,31 @@ ros_io_printstring_done:
     popa
     ret
 
+; Prints a single char located in si to the screen
+; INPUT: si = char
+ros_io_printchar:
+    pusha
+    mov ah, 0Eh
+    lodsb
+    cmp al, 0
+    je ros_io_printchar_done
+    int 10h
+ros_io_printchar_done:
+    popa
+    ret
+
+; Prints a new line
+newLineVar db 0Eh, 0Ah, 0h
+ros_io_newline:
+    push si
+    mov si, newLineVar
+    call ros_io_printstring
+    pop si
+
+
 ; Reboots the system
 ros_system_reboot:
 	mov ax, 0
 	int 19h
+; Converts integer to ascii 
+ros_basic_tostring:
