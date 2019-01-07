@@ -1,2 +1,2 @@
 # rawOS
-A work-in-progress operating system
+A 16-bit work-in-progress operating system
