@@ -51,18 +51,6 @@ ros_start:
 	call ros_io_printstring
     popa
 	call ros_api_init
-
-	pusha
-	mov ax, 5h
-	mov bx, 2h
-	mov dx, 0h
-
-	div bx
-	mov si, ax
-	call ros_io_printchar
-	mov si, dx
-	call ros_io_printchar
-	popa
 	jmp $
 ; GLOBAL VARIABLES ---------------------------------------------------
 
