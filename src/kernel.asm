@@ -63,6 +63,7 @@ ros_start:
 	mov bx, 2h
 	mov si, 3h
 	call ros_math_divide
+	mov ax, 123h
 	; ----------
 
 	jmp $
