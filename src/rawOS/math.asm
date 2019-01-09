@@ -20,11 +20,11 @@ ros_math_divide:
     ; Store all registers which we do not want to modify
     push si
     push di
-    mov cx, 0
-    add si, 1
+    mov cx, 0h
+    add si, 1h
 ros_math_divide_repeat:
     div bx
-    cmp cx, 0
+    cmp cx, 0h
     je ros_math_divide_add_q
     jne ros_math_divide_add_r
 ros_math_divide_add_q:
@@ -57,7 +57,7 @@ ros_math_divide_check:
     je ros_math_divide_done
 
     add cx, 1h ; Add 1 to program counter
-    cmp si, cx ; Check if we hit max length
+    cmp cx, si ; Check if we hit max length
     jge ros_math_divide_done 
 
     ; Move remainder to ax and multiply it by 10
