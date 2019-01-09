@@ -37,11 +37,6 @@ ros_io_newline:
     mov si, newLineVar
     call ros_io_printstring
     pop si
-
-
-; Reboots the system
-ros_system_reboot:
-	mov ax, 0
-	int 19h
+    ret
 ; Converts integer to ascii 
-ros_basic_tostring:
+ros_io_tostring:

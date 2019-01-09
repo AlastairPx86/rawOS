@@ -7,8 +7,13 @@ disk_buffer	equ	24576
 
 ros_api_callpoints:
     jmp ros_init ; 0000h
+
+	; ./rawOS/io.asm
 	jmp ros_io_printstring ; 0003h
+	; ./rawOS/system.asm
 	jmp ros_system_reboot ; 0006h
+
+	; ./rawOS/math.asm
 
 
 ; Kernel starts here
@@ -51,10 +56,21 @@ ros_start:
 	call ros_io_printstring
     popa
 	call ros_api_init
+
+    ; TEST ------------
+	mov dx, 0h
+	mov ax, 5h
+	mov bx, 2h
+	mov si, 3h
+	call ros_math_divide
+	; ----------
+
 	jmp $
 ; GLOBAL VARIABLES ---------------------------------------------------
 
 key_needed dw 1h
+
+ERROR_LOCATION dw 0h
 
 ; INCLUDES -----------------------------------------------------------
 
