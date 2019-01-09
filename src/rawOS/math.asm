@@ -85,6 +85,6 @@ ros_math_divide_done:
 ros_math_divide_decimal_overflow:
     pusha
     error_string db 'Integer overflow! We currently do not support decimals bigger than 0.65536, althogh this is planned to be fixed', 0Dh, 0Ah, 0h
-    lea ax, error_string ; Load the adress of 'error_string' into ax
+    mov si, error_string ; Load the adress of 'error_string' into ax
     mov bx, 1h ; While the kernel error handler isn't implemented yet, we reload the system as a temporarily solution
     jmp ros_system_error

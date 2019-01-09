@@ -4,7 +4,7 @@ ros_system_reboot:
 	int 19h
 
 ; Displays an error created by the api (not accessible from os vectors). Then make an action based on bx
-; INPUT: ax = memory adress of error message, bx = action to take
+; INPUT: si = error message, bx = action to take
 ; bx =
 ; 0: Do nothing
 ; 1: Reload the os
@@ -15,7 +15,6 @@ ros_system_reboot:
 ros_system_error:
     pusha
     ; Print error message
-    mov si, [ax]
     cmp si, 0
     je ros_system_error_action
     call ros_io_newline
