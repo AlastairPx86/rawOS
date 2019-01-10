@@ -97,7 +97,8 @@ ros_io_readline_repeat:
     cmp al, [rl_asciiStop] ; Check of stop key was pressed
     je ros_io_readline_done
 
-    mov si, al
+    mov ah, 0
+    mov si, ax
     call ros_io_printstring
 
     mov [di], al ; Move char into string
