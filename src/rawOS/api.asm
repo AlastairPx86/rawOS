@@ -5,3 +5,4 @@ ros_api_init:
 %INCLUDE "rawOS/io.asm"
 %INCLUDE "rawOS/system.asm"
 %INCLUDE "rawOS/math.asm"
+%INCLUDE "rawOS/cryptography.asm"

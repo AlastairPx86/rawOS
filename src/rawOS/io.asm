@@ -39,4 +39,14 @@ ros_io_newline:
     pop si
     ret
 ; Converts integer to ascii 
+; INPUT: ax = interger to be converted
+; OUTPUT: ax = integer in ascii format
+stringLoc times 7 db 0
 ros_io_tostring:
+    pusha
+
+    mov cx, 0
+    mov bx, 10
+    mov di, stringLoc
+ros_io_tostring_repeat:
+    

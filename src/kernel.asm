@@ -5,6 +5,7 @@ BITS 16
 
 disk_buffer	equ	24576
 
+; This defines all the active features in the kernel
 ros_api_callpoints:
     jmp ros_init ; 0000h
 
@@ -14,6 +15,7 @@ ros_api_callpoints:
 	jmp ros_system_reboot ; 0006h
 
 	; ./rawOS/math.asm
+	jmp ros_math_multiply ; 0009h (used for basic interpreter and sometimes in api)
 
 
 ; Kernel starts here
@@ -58,11 +60,9 @@ ros_start:
 	call ros_api_init
 
     ; TEST ------------
-	mov dx, 0h
-	mov ax, 5h
-	mov bx, 2h
-	mov si, 3h
-	call ros_math_divide
+	mov si, string_v
+	add si, 1
+	call ros_io_printstring
 	; ----------
 
 	jmp $
