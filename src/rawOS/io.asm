@@ -60,9 +60,6 @@ ros_io_tostring_repeat:
     cmp di, string ; Check if we're at the start
     je ros_io_tostring_done ; If so: we're done
 
-    cmp ax, 0 ; Check if we've done everything
-    je ros_io_tostring_done
-
     sub di, 1 ; Move the reader upwards to the next byte
     mov dx, 0 ; Clear dx
     
