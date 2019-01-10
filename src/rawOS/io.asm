@@ -87,7 +87,7 @@ ros_io_readline:
     je ros_io_readline_setEnter
 ros_io_readline_next:
     mov [rl_asciiStop], al
-    mov cx, rl_string ; CX will act as our counter for position in memory
+    mov di, rl_string ; DI will act as our counter for position in memory
     mov bx, 0
 ros_io_readline_repeat:
     mov ax, 0 ; Configure for interupt
@@ -96,16 +96,17 @@ ros_io_readline_repeat:
     cmp al, [rl_asciiStop] ; Check of stop key was pressed
     je ros_io_readline_done
 
-    mov [cx], al ; Move char into string
-    inc cx ; Move reader
+    mov [di], al ; Move char into string
+    inc di ; Move reader
     inc bx
 
 ros_io_readline_done:
     mov [rl_stringLen], bx
-    mov [rl_stringLoc], cx
+    mov [rl_stringLoc], di
     popa
     mov bx, [rl_stringLen]
-    mov cx, [rl_stringLoc]
+    mov ax, [rl_stringLoc]
+    ret
 
 ros_io_readline_setEnter:
     mov al, 0Dh
