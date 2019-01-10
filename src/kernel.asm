@@ -59,12 +59,6 @@ ros_start:
     popa
 	call ros_api_init
 
-    ; TEST ------------
-	mov ax, 1234
-	call ros_io_tostring
-	call ros_io_printstring
-	; ----------
-
 	jmp $
 ; GLOBAL VARIABLES ---------------------------------------------------
 

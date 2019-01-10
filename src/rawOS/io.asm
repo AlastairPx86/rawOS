@@ -41,7 +41,7 @@ ros_io_newline:
 ; Converts integer to ascii 
 ; INPUT: ax = interger to be converted
 ; OUTPUT: si = memory adress with string
-; NOTE: last byte of string will always be NULL. String will return in this format: Value = 2732, String = 02732
+; NOTE: last byte of string will always be NULL.
 string times 6 db 0
 interger dw 0
 stringLoc dw 0
@@ -73,3 +73,9 @@ ros_io_tostring_done:
     popa
     mov si, [stringLoc]
     ret
+
+
+; Takes in keyboard events until the user presses a certain key. Max size is 256 bytes
+; INPUT: al = ASCII character to stop when pressed (if al = 0 then al will be changed to 'ENTER')
+; OUTPUT: ax = adress for string
+string resb 256
