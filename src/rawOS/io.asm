@@ -44,6 +44,7 @@ ros_io_newline:
 ; NOTE: last byte of string will always be NULL. String will return in this format: Value = 2732, String = 02732
 string times 6 db 0
 interger dw 0
+stringLoc dw 0
 ros_io_tostring:
     pusha
     mov dx, 0 ; Make sure dx is 0 for our division
@@ -59,12 +60,16 @@ ros_io_tostring_repeat:
     cmp di, string ; Check if we're at the start
     je ros_io_tostring_done ; If so: we're done
 
+    cmp ax, 0 ; Check if we've done everything
+    je ros_io_tostring_done
+
     sub di, 1 ; Move the reader upwards to the next byte
     mov dx, 0 ; Clear dx
     
     jmp ros_io_tostring_repeat
 
 ros_io_tostring_done:
+    mov [stringLoc], di
     popa
-    mov si, string
+    mov si, stringLoc
     ret
