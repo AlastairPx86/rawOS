@@ -60,8 +60,8 @@ ros_start:
 	call ros_api_init
 
     ; TEST ------------
-	mov si, string_v
-	add si, 1
+	mov ax, 1234
+	call ros_io_tostring
 	call ros_io_printstring
 	; ----------
 

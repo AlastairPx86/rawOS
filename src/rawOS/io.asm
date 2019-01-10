@@ -40,13 +40,31 @@ ros_io_newline:
     ret
 ; Converts integer to ascii 
 ; INPUT: ax = interger to be converted
-; OUTPUT: ax = integer in ascii format
-stringLoc times 7 db 0
+; OUTPUT: si = memory adress with string
+; NOTE: last byte of string will always be NULL. String will return in this format: Value = 2732, String = 02732
+string times 6 db 0
+interger dw 0
 ros_io_tostring:
     pusha
-
-    mov cx, 0
-    mov bx, 10
-    mov di, stringLoc
+    mov dx, 0 ; Make sure dx is 0 for our division
+    mov [integer], ax
+    mov bx, 10 ; We're going to divide by 10
+    mov di, string ; DI keeps track of our current position in the string
+    add di, 4 ; Move position of reader to the first char
 ros_io_tostring_repeat:
+    div bx ; Now the singular digit is in dx and the rest in ax. For example if the initial value was 7263: ax = 726, dx = 3
+    add dx, 0x30 ; Make the singular digit an ascii char
+    mov [di], dl ; Move the char into the string. NOTE: We're moving in DL instead of dx because we would overwrite the next byte if we did so (this is not a problem if dx is bigger than 7Fh which it wont)
+
+    cmp di, string ; Check if we're at the start
+    je ros_io_tostring_done ; If so: we're done
+
+    sub di, 1 ; Move the reader upwards to the next byte
+    mov dx, 0 ; Clear dx
     
+    jmp ros_io_tostring_repeat
+
+ros_io_tostring_done:
+    popa
+    mov si, string
+    ret
