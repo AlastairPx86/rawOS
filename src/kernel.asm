@@ -52,12 +52,28 @@ ros_init_get_keystroke:
 	jmp ros_init_get_keystroke ; Else: repeat
 
 ; Initialize the api, then find the 
-string_v db 'Works', 0h
+string_v db 'Type something: ', 0h
+string_d db 'So you said: ', 0h
 ros_start:
     mov si, string_key_got_enter
 	call ros_io_printstring
     popa
 	call ros_api_init
+
+	; TEST ----------------
+
+    mov si, string_v
+	call ros_io_printstring
+	mov al, 0
+	call ros_io_readline
+	call ros_io_newline
+	mov si, string_d
+	call ros_io_printstring
+	mov si, ax
+	call ros_io_printstring
+	call ros_io_newline
+
+	; ---------------------
 
 	jmp $
 ; GLOBAL VARIABLES ---------------------------------------------------
