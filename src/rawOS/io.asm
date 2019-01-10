@@ -80,6 +80,7 @@ ros_io_tostring_done:
 ; OUTPUT: ax = adress for string, bx = size of string (to prevent an unessecary amout of 0's)
 rl_string times 256 db 0
 rl_stringLen dw 0
+rl_stringLoc dw 0
 rl_asciiStop db 0
 ros_io_readline:
     pusha
