@@ -78,22 +78,22 @@ ros_io_tostring_done:
 ; Takes in keyboard events until the user presses a certain key. Max size is 256 bytes
 ; INPUT: al = ASCII character to stop when pressed (if al = 0 then al will be changed to 'ENTER')
 ; OUTPUT: ax = adress for string, bx = size of string (to prevent an unessecary amout of 0's)
-string times 256 db 0
-stringLen dw 0
-asciiStop db 0
+rl_string times 256 db 0
+rl_stringLen dw 0
+rl_asciiStop db 0
 ros_io_readline:
     pusha
     cmp al, 0
     je ros_io_readline_setEnter
 ros_io_readline_next:
-    mov [asciiStop], al
-    mov cx, string ; CX will act as our counter for position in memory
+    mov [rl_asciiStop], al
+    mov cx, rl_string ; CX will act as our counter for position in memory
     mov bx, 0
 ros_io_readline_repeat:
     mov ax, 0 ; Configure for interupt
     int 16h ; Key keystroke
 
-    cmp al, [asciiStop] ; Check of stop key was pressed
+    cmp al, [rl_asciiStop] ; Check of stop key was pressed
     je ros_io_readline_done
 
     mov [cx], al ; Move char into string
@@ -101,11 +101,11 @@ ros_io_readline_repeat:
     inc bx
 
 ros_io_readline_done:
-    mov [stringLen], bx
-    mov [stringLoc], cx
+    mov [rl_stringLen], bx
+    mov [rl_stringLoc], cx
     popa
-    mov bx, [stringLen]
-    mov cx, [stringLoc]
+    mov bx, [rl_stringLen]
+    mov cx, [rl_stringLoc]
 
 ros_io_readline_setEnter:
     mov al, 0Dh
