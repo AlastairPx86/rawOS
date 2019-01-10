@@ -6,7 +6,7 @@
 ; call ros_print_string
 ros_io_printstring:
     pusha
-	mov ah, 0Eh
+    mov ah, 0Eh
 ros_io_printstring_repeat:
     lodsb
     cmp al, 0
@@ -47,7 +47,7 @@ interger dw 0
 ros_io_tostring:
     pusha
     mov dx, 0 ; Make sure dx is 0 for our division
-    mov [integer], ax
+    mov [interger], ax
     mov bx, 10 ; We're going to divide by 10
     mov di, string ; DI keeps track of our current position in the string
     add di, 4 ; Move position of reader to the first char
