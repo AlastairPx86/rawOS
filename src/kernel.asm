@@ -64,7 +64,7 @@ ros_start:
 
     mov si, string_v
 	call ros_io_printstring
-	mov al, 0
+	mov al, 0Dh
 	call ros_io_readline
 	call ros_io_newline
 	mov si, string_d

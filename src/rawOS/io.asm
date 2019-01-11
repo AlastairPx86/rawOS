@@ -1,6 +1,6 @@
 
 ; Prints a string located in si to the screen
-; INPUT: SI = String value
+; INPUT: SI = String memory adress
 ; Example:
 ; mov si, string_to_print
 ; call ros_print_string
@@ -97,13 +97,18 @@ ros_io_readline_repeat:
     cmp al, [rl_asciiStop] ; Check of stop key was pressed
     je ros_io_readline_done
 
-    mov ah, 0
-    mov si, ax
-    call ros_io_printstring
+    cmp al, 8h ; Check if user hit backspace
+    je ros_io_readline_backspace
+
+    mov ah, 0Eh
+    int 10h
 
     mov [di], al ; Move char into string
     inc di ; Move reader
     inc bx
+    cmp bx, 256
+    je ros_io_readline_done
+    jmp ros_io_readline_repeat
 
 ros_io_readline_done:
     mov [rl_stringLen], bx
@@ -116,3 +121,22 @@ ros_io_readline_done:
 ros_io_readline_setEnter:
     mov al, 0Dh
     jmp ros_io_readline_next
+ros_io_readline_backspace:
+    cmp bx, 0
+    je ros_io_readline_repeat
+
+    mov ah, 0Eh
+    int 10h
+
+    push bx
+    mov bx, ax
+    mov al, 20h
+    int 10h
+    mov ax, bx
+    int 10h
+    pop bx
+
+    sub di, 1
+    sub bx, 1
+    mov [di], byte 0h
+    jmp ros_io_readline_repeat
