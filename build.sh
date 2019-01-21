@@ -20,6 +20,15 @@ nasm -O0 -w+orphan-labels -f bin -o src/bootloader/bootloader.bin src/bootloader
 
 echo "-> src/bootloader/bootloader.bin"
 
+echo "Making c code..."
+
+cd src/rawOS
+for i in *.c
+do
+    gcc -m16 -S -o `basename $i .c`.asm $i
+	echo "`basename $i .c`.c -> `basename $i .c`.asm"
+done
+
 
 echo "Building kernel..."
 

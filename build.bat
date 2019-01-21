@@ -30,3 +30,11 @@ echo Copying kernel and programs...
 imdisk -a -f flp/rawOS.flp -s 1440K -m B:
 
 copy src\kernel.bin b:\
+copy src\programs\*.bin b:\
+copy src\programs\*.bas b:\
+copy src\programs\*.apt b:\
+
+echo Dismounting disk image...
+imdisk -D -m B:
+
+echo Done
