@@ -82,6 +82,18 @@ key_needed dw 1h
 
 ERROR_LOCATION dw 0h
 
+fma0 dw 0
+fma1 dw 0
+fma2 dw 0
+fma3 dw 0
+fma4 dw 0
+
+fmao0 dw 0
+fmao1 dw 0
+fmao2 dw 0
+fmao3 dw 0
+fmao4 dw 0
+
 ; INCLUDES -----------------------------------------------------------
 
 %INCLUDE "rawOS/api.asm"

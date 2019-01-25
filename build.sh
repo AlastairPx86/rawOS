@@ -13,7 +13,18 @@ mkdosfs -C flp/rawOS.flp 1440 || exit
 
 echo ">>> Assembling bootloader..."
 
-nasm -O0 -w+orphan-labels -f bin -o src/bootloader/bootloader.bin src/bootloader/bootloader.asm || exit
+nasm -O0 -w+orphan-labels -f bin -o src/bootloader/bootloader.bin src/bootloader/bootloader.asm || 
+
+echo ">>> Assembling C code..."
+
+cd src/rawOS
+for i in *.c
+do
+    gcc -fno-asynchronous-unwind-tables -O2 -s -c -nostdinc -I../include/ -m16 $i -o `basename $i .c`.o
+	objconv -fnasm `basename $i .c`.o
+done
+cd ..
+cd ..
 
 
 echo ">>> Assembling kernel..."
